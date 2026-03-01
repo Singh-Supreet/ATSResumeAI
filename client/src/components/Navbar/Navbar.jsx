@@ -35,7 +35,7 @@ export default function Navbar() {
           <div className="navbar__logo-icon">
             <HiSparkles />
           </div>
-          <span className="navbar__logo-text">Resume<span>AI</span></span>
+          <span className="navbar__logo-text">ATSResume<span>AI</span></span>
         </Link>
 
         {/* Desktop Nav */}
