@@ -1,0 +1,213 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-fixed;
+  padding: $spacing-4 0;
+  transition: $transition-all;
+
+  &--scrolled {
+    padding: $spacing-3 0;
+    background: rgba($bg-primary, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid $border-color;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  &__container {
+    @include container;
+    @include flex(row, space-between, center);
+    gap: $spacing-4;
+  }
+
+  // Logo
+  &__logo {
+    @include flex(row, flex-start, center, $spacing-3);
+    text-decoration: none;
+    flex-shrink: 0;
+
+    &-icon {
+      width: 38px;
+      height: 38px;
+      background: $gradient-primary;
+      border-radius: $radius-lg;
+      @include flex-center;
+      color: white;
+      font-size: $text-lg;
+      box-shadow: 0 4px 15px rgba($primary, 0.4);
+    }
+
+    &-text {
+      font-family: $font-display;
+      font-size: $text-xl;
+      font-weight: $font-bold;
+      color: $text-primary;
+
+      span {
+        @include gradient-text($gradient-primary);
+      }
+    }
+  }
+
+  // Desktop Links
+  &__links {
+    display: none;
+    @include md {
+      @include flex(row, flex-start, center, $spacing-1);
+    }
+  }
+
+  &__link {
+    color: $text-secondary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-lg;
+    transition: $transition-base;
+    text-decoration: none;
+
+    &:hover {
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  // Actions
+  &__actions {
+    display: none;
+    @include md {
+      @include flex(row, flex-end, center, $spacing-3);
+    }
+  }
+
+  &__user {
+    @include flex(row, flex-start, center, $spacing-2);
+
+    &-avatar {
+      width: 34px;
+      height: 34px;
+      background: $gradient-primary;
+      border-radius: 50%;
+      @include flex-center;
+      font-size: $text-sm;
+      font-weight: $font-bold;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    &-name {
+      font-size: $text-sm;
+      font-weight: $font-medium;
+      color: $text-primary;
+      max-width: 100px;
+      @include truncate;
+    }
+  }
+
+  &__btn {
+    @include btn-base;
+    font-size: $text-sm;
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-lg;
+    gap: $spacing-2;
+
+    &--ghost {
+      @include glass(0.04);
+      color: $text-secondary;
+      border-radius: $radius-lg;
+
+      &:hover {
+        color: $text-primary;
+        background: rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    &--primary {
+      background: $gradient-primary;
+      color: white;
+      box-shadow: 0 4px 15px rgba($primary, 0.35);
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba($primary, 0.5);
+      }
+    }
+  }
+
+  // Hamburger
+  &__hamburger {
+    @include btn-base;
+    @include glass(0.04);
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-lg;
+    color: $text-primary;
+    font-size: $text-xl;
+    padding: 0;
+
+    @include md { display: none; }
+
+    &:hover { background: rgba(255, 255, 255, 0.08); }
+  }
+
+  // Mobile Menu
+  &__mobile {
+    display: none;
+    flex-direction: column;
+    padding: $spacing-4 $spacing-4;
+    background: rgba($bg-primary, 0.98);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid $border-color;
+    gap: $spacing-2;
+
+    @include md { display: none !important; }
+
+    &--open {
+      display: flex;
+    }
+
+    &-link {
+      @include flex(row, flex-start, center, $spacing-3);
+      color: $text-secondary;
+      font-size: $text-base;
+      font-weight: $font-medium;
+      padding: $spacing-3 $spacing-4;
+      border-radius: $radius-lg;
+      transition: $transition-base;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+
+      &:hover {
+        color: $text-primary;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      &--primary {
+        background: $gradient-primary;
+        color: white;
+        justify-content: center;
+        margin-top: $spacing-2;
+
+        &:hover {
+          opacity: 0.9;
+          color: white;
+          background: $gradient-primary;
+        }
+      }
+
+      &--logout {
+        color: $error;
+        &:hover { background: rgba($error, 0.1); color: $error; }
+      }
+    }
+  }
+}

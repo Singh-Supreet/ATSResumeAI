@@ -1,0 +1,218 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.auth {
+  min-height: 100vh;
+  @include flex-center;
+  padding: $spacing-20 $spacing-4;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 30% 50%, rgba($primary, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 70% 60%, rgba($secondary, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  &__container {
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+  }
+
+  &__card {
+    @include glass(0.05, 24px);
+    border-radius: $radius-3xl;
+    padding: $spacing-10;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: $shadow-card;
+
+    @include sm { padding: $spacing-12; }
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: $spacing-8;
+  }
+
+  &__logo {
+    @include flex(row, center, center, $spacing-2);
+    text-decoration: none;
+    margin-bottom: $spacing-6;
+
+    &-icon {
+      width: 44px;
+      height: 44px;
+      background: $gradient-primary;
+      border-radius: $radius-xl;
+      @include flex-center;
+      color: white;
+      font-size: $text-xl;
+      box-shadow: 0 4px 15px rgba($primary, 0.4);
+    }
+
+    span {
+      font-family: $font-display;
+      font-size: $text-xl;
+      font-weight: $font-bold;
+      color: $text-primary;
+    }
+  }
+
+  &__title {
+    font-size: $text-3xl;
+    font-weight: $font-bold;
+    margin-bottom: $spacing-2;
+    color: $text-primary;
+  }
+
+  &__subtitle {
+    font-size: $text-sm;
+    color: $text-secondary;
+  }
+
+  &__form {
+    @include flex(column, flex-start, stretch, $spacing-5);
+    margin-bottom: $spacing-6;
+  }
+
+  &__field {
+    @include flex(column, flex-start, stretch, $spacing-2);
+  }
+
+  &__label {
+    @include flex(row, space-between, center);
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    color: $text-secondary;
+  }
+
+  &__label-hint {
+    font-size: $text-xs;
+    color: $text-muted;
+    font-weight: $font-normal;
+  }
+
+  &__input-wrap {
+    position: relative;
+    @include flex(row, flex-start, center);
+  }
+
+  &__input-icon {
+    position: absolute;
+    left: $spacing-4;
+    color: $text-muted;
+    font-size: $text-lg;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  &__input {
+    @include input-base;
+    padding-left: $spacing-10;
+
+    &--pass { padding-right: $spacing-12; }
+  }
+
+  &__toggle {
+    position: absolute;
+    right: $spacing-4;
+    background: none;
+    border: none;
+    color: $text-muted;
+    cursor: pointer;
+    font-size: $text-lg;
+    padding: 0;
+    transition: $transition-base;
+    @include flex-center;
+
+    &:hover { color: $text-primary; }
+  }
+
+  // Password Strength
+  &__strength {
+    @include flex(row, flex-start, center, $spacing-3);
+    margin-top: $spacing-1;
+
+    &-bar {
+      flex: 1;
+      height: 4px;
+      border-radius: $radius-full;
+      background: rgba(255, 255, 255, 0.1);
+      transition: $transition-base;
+      position: relative;
+      overflow: hidden;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-radius: inherit;
+        transition: $transition-slow;
+      }
+
+      &.weak::after {
+        width: 33%;
+        background: $error;
+      }
+      &.medium::after {
+        width: 66%;
+        background: $warning;
+      }
+      &.strong::after {
+        width: 100%;
+        background: $success;
+      }
+    }
+
+    span {
+      font-size: $text-xs;
+      color: $text-muted;
+      min-width: 45px;
+    }
+  }
+
+  // Submit Button
+  &__submit {
+    @include btn-primary;
+    width: 100%;
+    padding: $spacing-4;
+    font-size: $text-base;
+    border-radius: $radius-xl;
+    gap: $spacing-2;
+    margin-top: $spacing-2;
+    justify-content: center;
+
+    &-loader {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+  }
+
+  &__switch {
+    text-align: center;
+    font-size: $text-sm;
+    color: $text-secondary;
+
+    a {
+      color: $primary-light;
+      font-weight: $font-medium;
+      transition: $transition-base;
+
+      &:hover {
+        color: $primary;
+        text-decoration: underline;
+      }
+    }
+  }
+}

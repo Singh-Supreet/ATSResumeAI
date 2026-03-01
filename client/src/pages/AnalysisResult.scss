@@ -1,0 +1,495 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+// ============================================================
+// LOADING STATE
+// ============================================================
+.analysis-loading {
+  min-height: 100vh;
+  @include flex(column, center, center, $spacing-6);
+  padding: $spacing-20 $spacing-4;
+  text-align: center;
+
+  h2 {
+    font-size: $text-3xl;
+    @include gradient-text($gradient-primary);
+  }
+
+  p {
+    font-size: $text-base;
+    color: $text-secondary;
+    max-width: 400px;
+  }
+
+  &__steps {
+    @include flex(column, flex-start, flex-start, $spacing-3);
+    margin-top: $spacing-4;
+  }
+
+  &__step {
+    @include flex(row, flex-start, center, $spacing-2);
+    font-size: $text-sm;
+    color: $text-secondary;
+    animation: fadeInUp 0.5s ease both;
+
+    svg {
+      color: $primary-light;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+// ============================================================
+// ERROR STATE
+// ============================================================
+.analysis-error {
+  min-height: 100vh;
+  @include flex(column, center, center, $spacing-4);
+  text-align: center;
+  padding: $spacing-20 $spacing-4;
+
+  svg {
+    font-size: 64px;
+    color: $error;
+    margin-bottom: $spacing-4;
+  }
+
+  h2 { font-size: $text-3xl; }
+
+  p {
+    color: $text-secondary;
+    margin-bottom: $spacing-6;
+  }
+
+  button {
+    @include btn-secondary;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-6;
+    font-size: $text-base;
+  }
+}
+
+// ============================================================
+// MAIN RESULT PAGE
+// ============================================================
+.analysis-result {
+  min-height: 100vh;
+  padding: calc(80px + $spacing-8) 0 $spacing-20;
+
+  &__back {
+    @include btn-base;
+    @include glass(0.04);
+    color: $text-secondary;
+    gap: $spacing-2;
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-lg;
+    font-size: $text-sm;
+    margin-bottom: $spacing-8;
+
+    &:hover {
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  &__header {
+    @include flex(row, space-between, flex-start, $spacing-4);
+    margin-bottom: $spacing-8;
+    flex-wrap: wrap;
+      @media (max-width: 991px) {
+   flex-direction: column;
+  }
+  }
+
+  &__file {
+    @include flex(row, flex-start, center, $spacing-4);
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__file-icon {
+    width: 56px;
+    height: 56px;
+    background: $gradient-primary;
+    border-radius: $radius-xl;
+    @include flex-center;
+    font-size: 28px;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba($primary, 0.35);
+  }
+
+  &__file-name {
+    font-size: clamp($text-xl, 3vw, $text-2xl);
+    font-weight: $font-semibold;
+    @include truncate;
+    margin-bottom: $spacing-1;
+  }
+
+  &__file-meta {
+    font-size: $text-sm;
+    color: $text-muted;
+  }
+
+  &__badges {
+    @include flex(row, flex-end, center, $spacing-2);
+    flex-wrap: wrap;
+  }
+
+  &__level {
+    @include flex(row, flex-start, center, $spacing-2);
+    @include glass(0.06);
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-full;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: $primary-light;
+    border: 1px solid rgba($primary, 0.25);
+    white-space: nowrap;
+
+    &--role {
+      color: $warning;
+      border-color: rgba($warning, 0.25);
+      strong { font-weight: $font-bold; }
+    }
+
+    &--jd {
+      color: $accent;
+      border-color: rgba($accent, 0.25);
+    }
+  }
+}
+
+// ============================================================
+// SCORE SECTION
+// ============================================================
+.score-section {
+  @include glass-card;
+  padding: $spacing-8;
+  margin-bottom: $spacing-6;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-8;
+
+  @include md { grid-template-columns: auto 1fr; align-items: center; }
+
+  &__circles {
+    @include flex(row, center, center, $spacing-8);
+    flex-wrap: wrap;
+  }
+
+  &__bars {
+    @include flex(column, flex-start, stretch, $spacing-5);
+    flex: 1;
+  }
+}
+
+.score-circle {
+  @include flex(column, flex-start, center, $spacing-3);
+  text-align: center;
+
+  &__ring {
+    width: 130px;
+    height: 130px;
+
+    .CircularProgressbar-text {
+      font-family: $font-display;
+      font-weight: $font-bold;
+    }
+  }
+
+  &__info {
+    @include flex(column, flex-start, center, $spacing-1);
+  }
+
+  &__label {
+    font-size: $text-sm;
+    color: $text-secondary;
+    font-weight: $font-medium;
+  }
+
+  &__grade {
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}
+
+.score-bar {
+  @include flex(column, flex-start, stretch, $spacing-2);
+
+  &__label {
+    @include flex(row, space-between, center);
+    font-size: $text-sm;
+    color: $text-secondary;
+
+    span:last-child {
+      font-weight: $font-semibold;
+    }
+  }
+
+  &__track {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: $radius-full;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: $radius-full;
+    transition: width 1.2s ease-out;
+  }
+}
+
+// ============================================================
+// SUMMARY CARD
+// ============================================================
+.summary-card {
+  @include glass-card;
+  padding: $spacing-6;
+  margin-bottom: $spacing-6;
+  border-left: 3px solid $primary;
+
+  &__header {
+    @include flex(row, flex-start, center, $spacing-2);
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: $primary-light;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: $spacing-3;
+
+    svg { font-size: $text-base; }
+  }
+
+  &__text {
+    font-size: $text-base;
+    color: $text-secondary;
+    line-height: 1.8;
+  }
+}
+
+// ============================================================
+// JOB TITLES
+// ============================================================
+.job-titles-card {
+  @include glass-card;
+  padding: $spacing-6;
+  margin-bottom: $spacing-6;
+
+  &__header {
+    @include flex(row, flex-start, center, $spacing-2);
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: $spacing-4;
+
+    svg { color: $primary-light; }
+  }
+
+  &__list {
+    @include flex(row, flex-start, center, $spacing-3);
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    @include flex(row, flex-start, center, $spacing-2);
+    padding: $spacing-2 $spacing-4;
+    background: rgba($primary, 0.1);
+    border: 1px solid rgba($primary, 0.2);
+    border-radius: $radius-full;
+    font-size: $text-sm;
+    color: $primary-light;
+    font-weight: $font-medium;
+
+    svg { font-size: $text-xs; color: $warning; }
+
+    &:hover {
+      background: rgba($primary, 0.18);
+    }
+  }
+}
+
+// ============================================================
+// ANALYSIS GRID
+// ============================================================
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-5;
+  margin-bottom: $spacing-6;
+
+  @include md { grid-template-columns: repeat(2, 1fr); }
+}
+
+// List Cards
+.list-card {
+  @include glass-card;
+  overflow: hidden;
+  height: 100%;
+
+  &__header {
+    @include flex(row, flex-start, center, $spacing-3);
+    padding: $spacing-5 $spacing-6;
+    border-bottom: 1px solid $border-color;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  &__icon {
+    font-size: $text-2xl;
+  }
+
+  &__title {
+    font-size: $text-base;
+    font-weight: $font-semibold;
+    color: $text-primary;
+    flex: 1;
+  }
+
+  &__count {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: $radius-full;
+    @include flex-center;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    color: $text-secondary;
+  }
+
+  &__items {
+    padding: $spacing-5 $spacing-6;
+    @include flex(column, flex-start, stretch, $spacing-3);
+  }
+
+  &__item {
+    @include flex(row, flex-start, flex-start, $spacing-3);
+    font-size: $text-sm;
+    color: $text-secondary;
+    line-height: 1.6;
+  }
+
+  &__bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  // Type variants
+  &--success {
+    border-top: 2px solid rgba(#10b981, 0.4);
+    .list-card__header { background: rgba(#10b981, 0.04); }
+  }
+  &--error {
+    border-top: 2px solid rgba(#ef4444, 0.4);
+    .list-card__header { background: rgba(#ef4444, 0.04); }
+  }
+  &--info {
+    border-top: 2px solid rgba(#06b6d4, 0.4);
+    .list-card__header { background: rgba(#06b6d4, 0.04); }
+  }
+  &--warning {
+    border-top: 2px solid rgba(#f59e0b, 0.4);
+    .list-card__header { background: rgba(#f59e0b, 0.04); }
+  }
+}
+
+// ============================================================
+// SKILLS GRID
+// ============================================================
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-5;
+  margin-bottom: $spacing-6;
+
+  @include md { grid-template-columns: repeat(2, 1fr); }
+  @include lg { grid-template-columns: repeat(3, 1fr); }
+}
+
+.tag-cloud-card {
+  @include glass-card;
+  padding: $spacing-5;
+
+  &__header {
+    @include flex(row, flex-start, center, $spacing-2);
+    margin-bottom: $spacing-4;
+
+    svg { font-size: $text-xl; }
+
+    h3 {
+      font-size: $text-base;
+      font-weight: $font-semibold;
+      color: $text-primary;
+    }
+  }
+
+  &__tags {
+    @include flex(row, flex-start, flex-start, $spacing-2);
+    flex-wrap: wrap;
+  }
+
+  &__tag {
+    padding: $spacing-1 $spacing-3;
+    background: rgba(var(--color), 0.1);
+    border: 1px solid rgba(var(--color), 0.2);
+    color: var(--color);
+    border-radius: $radius-full;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    transition: $transition-base;
+
+    &:hover {
+      background: rgba(var(--color), 0.18);
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ============================================================
+// SCORE LEGEND
+// ============================================================
+.score-legend {
+  @include flex(row, center, center, $spacing-6);
+  flex-wrap: wrap;
+  padding: $spacing-4;
+  @include glass(0.03);
+  border-radius: $radius-xl;
+  border: 1px solid $border-color;
+
+  p {
+    font-size: $text-xs;
+    color: $text-muted;
+    font-weight: $font-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-right: $spacing-2;
+  }
+
+  &__item {
+    @include flex(row, flex-start, center, $spacing-2);
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &__range {
+    font-size: $text-xs;
+    color: $text-muted;
+  }
+
+  &__label {
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+  }
+}

@@ -1,0 +1,613 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.dashboard {
+  min-height: 100vh;
+  padding: calc(80px + $spacing-8) 0 $spacing-16;
+
+  &__header {
+    @include flex(row, space-between, flex-start, $spacing-4);
+    margin-bottom: $spacing-10;
+    flex-wrap: wrap;
+    gap: $spacing-4;
+  }
+
+  &__title {
+    font-size: clamp($text-3xl, 4vw, $text-4xl);
+    font-weight: $font-bold;
+    margin-bottom: $spacing-2;
+    color: $text-primary;
+  }
+
+  &__subtitle {
+    font-size: $text-base;
+    color: $text-secondary;
+  }
+
+  &__stats {
+    @include flex(row, flex-end, center, $spacing-4);
+  }
+
+  &__stat {
+    @include glass-card;
+    padding: $spacing-4 $spacing-6;
+    @include flex(row, flex-start, center, $spacing-3);
+    color: $primary-light;
+
+    svg { font-size: $text-xl; }
+
+    span {
+      font-size: $text-2xl;
+      font-weight: $font-bold;
+      color: $text-primary;
+    }
+
+    small {
+      font-size: $text-xs;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 100%;
+    gap: $spacing-8;
+
+    @include lg {
+      grid-template-columns: 1fr 1.5fr;
+      align-items: start;
+    }
+  }
+
+  &__upload-col,
+  &__history-col {
+    width: 100%;
+  }
+}
+
+// ============================================================
+// UPLOAD SECTION
+// ============================================================
+.upload-section {
+  @include glass-card;
+  padding: $spacing-8;
+  @include flex(column, flex-start, stretch, $spacing-6);
+
+  &__header {
+    @include flex(row, flex-start, center, $spacing-3);
+    color: $primary-light;
+    font-size: $text-xl;
+
+    h2 {
+      font-size: $text-xl;
+      font-weight: $font-semibold;
+      color: $text-primary;
+    }
+  }
+  @media (max-width: 991px) {
+    padding: 16px;
+  }
+}
+
+.dropzone {
+  border: 2px dashed $border-color;
+  border-radius: $radius-2xl;
+  padding: $spacing-12 $spacing-8;
+  text-align: center;
+  cursor: pointer;
+  transition: $transition-all;
+  background: rgba(255, 255, 255, 0.02);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: $gradient-primary;
+    opacity: 0;
+    transition: $transition-base;
+  }
+
+  &:hover {
+    border-color: rgba($primary, 0.5);
+    background: rgba($primary, 0.04);
+
+    &::before { opacity: 0.03; }
+  }
+
+  &--active {
+    border-color: $primary;
+    background: rgba($primary, 0.08);
+    border-style: solid;
+    box-shadow: 0 0 0 4px rgba($primary, 0.15), $shadow-glow;
+
+    &::before { opacity: 0.06; }
+  }
+
+  &--reject {
+    border-color: $error;
+    background: rgba($error, 0.06);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  &__content {
+    @include flex(column, flex-start, center, $spacing-3);
+    position: relative;
+  }
+
+  &__icon {
+    width: 72px;
+    height: 72px;
+    background: rgba($primary, 0.1);
+    border-radius: $radius-2xl;
+    @include flex-center;
+    font-size: 36px;
+    color: $primary-light;
+    margin-bottom: $spacing-2;
+    transition: $transition-all;
+
+    &--active {
+      background: rgba($primary, 0.2);
+      transform: scale(1.1);
+      animation: bounce 0.6s ease infinite;
+    }
+
+    &--loading {
+      background: rgba($primary, 0.1);
+    }
+  }
+
+  &__text {
+    font-size: $text-base;
+    color: $text-secondary;
+    font-weight: $font-medium;
+
+    span {
+      color: $primary-light;
+      font-weight: $font-semibold;
+    }
+
+    &--active {
+      color: $primary-light;
+      font-weight: $font-semibold;
+    }
+  }
+
+  &__hint {
+    font-size: $text-sm;
+    color: $text-muted;
+  }
+}
+
+// ============================================================
+// TARGET ROLE INPUT
+// ============================================================
+.target-role {
+  @include flex(column, flex-start, stretch, $spacing-2);
+  position: relative;
+
+  &__label {
+    @include flex(row, flex-start, center, $spacing-2);
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: $text-secondary;
+    svg { color: $primary-light; font-size: $text-base; }
+  }
+
+  &__optional {
+    font-size: $text-xs;
+    color: $text-muted;
+    font-weight: $font-normal;
+    margin-left: auto;
+    background: rgba(255,255,255,0.05);
+    padding: 2px $spacing-2;
+    border-radius: $radius-full;
+    border: 1px solid $border-color;
+
+    @media (max-width: 991px) {
+      font-size: 8px;
+      padding: 4px 8px;
+    }
+  }
+
+  &__input-wrap {
+    position: relative;
+    @include flex(row, flex-start, center);
+  }
+
+  &__input {
+    @include input-base;
+    padding-right: $spacing-10;
+    font-size: $text-sm;
+  }
+
+  &__clear {
+    position: absolute;
+    right: $spacing-3;
+    background: none;
+    border: none;
+    color: $text-muted;
+    cursor: pointer;
+    font-size: $text-xs;
+    padding: $spacing-1;
+    border-radius: $radius-sm;
+    transition: $transition-base;
+    @include flex-center;
+    &:hover { color: $text-primary; background: rgba(255,255,255,0.08); }
+  }
+
+  // Autocomplete dropdown
+  &__suggestions {
+    position: absolute;
+    top: calc(100% + $spacing-1);
+    left: 0;
+    right: 0;
+    z-index: $z-dropdown;
+    background: $bg-secondary;
+    border: 1px solid $border-color;
+    border-radius: $radius-xl;
+    overflow: hidden;
+    box-shadow: $shadow-xl;
+  
+  }
+
+  &__suggestion {
+    @include flex(row, flex-start, center, $spacing-2);
+    padding: $spacing-3 $spacing-4;
+    font-size: $text-sm;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: $transition-fast;
+    svg { color: $primary-light; font-size: $text-sm; flex-shrink: 0; }
+
+    &:hover {
+      background: rgba($primary, 0.1);
+      color: $text-primary;
+    }
+  }
+
+  &__hint {
+    @include flex(row, flex-start, center, $spacing-2);
+    font-size: $text-xs;
+    color: $text-muted;
+    line-height: 1.5;
+    svg { color: $warning; flex-shrink: 0; font-size: $text-sm; }
+  }
+}
+
+// ============================================================
+// JOB DESCRIPTION SECTION
+// ============================================================
+.jd-section {
+  @include flex(column, flex-start, stretch, 0);
+  border: 1px solid $border-color;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  transition: $transition-base;
+
+  &:focus-within,
+  &:has(.jd-section__textarea:not(:placeholder-shown)) {
+    border-color: rgba($accent, 0.35);
+  }
+
+  &__toggle {
+    @include btn-base;
+    @include flex(row, flex-start, center, $spacing-3);
+    width: 100%;
+    padding: $spacing-4 $spacing-5;
+    background: rgba(255, 255, 255, 0.03);
+    color: $text-secondary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    text-align: left;
+    border-radius: 0;
+    transition: $transition-base;
+
+    svg:first-child { color: $accent; font-size: $text-lg; flex-shrink: 0; }
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.06);
+      color: $text-primary;
+    }
+    @media (max-width: 991px) {
+          font-size: 10px;
+    padding: 16px 8px;
+    }
+  }
+
+  &__toggle-badge {
+    margin-left: auto;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    padding: 2px $spacing-2;
+    border-radius: $radius-full;
+    background: rgba($accent, 0.12);
+    color: $accent;
+    border: 1px solid rgba($accent, 0.25);
+  }
+
+  &__chevron {
+    font-size: $text-base;
+    color: $text-muted;
+    flex-shrink: 0;
+    transition: transform $transition-base;
+  }
+
+  &__body {
+    border-top: 1px solid $border-color;
+    @include flex(column, flex-start, stretch, 0);
+    animation: fadeInUp 0.2s ease;
+  }
+
+  &__textarea {
+    @include custom-scrollbar;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    border: none;
+    color: $text-primary;
+    font-family: $font-primary;
+    font-size: $text-sm;
+    line-height: 1.7;
+    padding: $spacing-4 $spacing-5;
+    resize: vertical;
+    min-height: 140px;
+    outline: none;
+    transition: background $transition-base;
+
+    &::placeholder { color: $text-muted; }
+
+    &:focus { background: rgba($accent, 0.03); }
+  }
+
+  &__footer {
+    @include flex(row, space-between, center);
+    padding: $spacing-2 $spacing-5 $spacing-3;
+    border-top: 1px solid $border-color;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  &__char-count {
+    font-size: $text-xs;
+    color: $text-muted;
+
+    &--ready { color: $success; font-weight: $font-semibold; }
+  }
+
+  &__clear {
+    @include btn-base;
+    font-size: $text-xs;
+    color: $text-muted;
+    background: none;
+    padding: $spacing-1 $spacing-2;
+    border-radius: $radius-sm;
+
+    &:hover { color: $error; background: rgba($error, 0.1); }
+  }
+}
+
+.upload-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-3;
+}
+
+.upload-feature {
+  @include flex(row, flex-start, center, $spacing-2);
+  font-size: $text-sm;
+  color: $text-secondary;
+
+  &__icon {
+    color: $success;
+    font-size: $text-base;
+    flex-shrink: 0;
+  }
+}
+
+// ============================================================
+// HISTORY SECTION
+// ============================================================
+.history-section {
+  @include glass-card;
+  padding: $spacing-8;
+  @include flex(column, flex-start, stretch, $spacing-6);
+  min-height: 400px;
+
+  &__header {
+    @include flex(row, space-between, center);
+  }
+
+  &__title {
+    @include flex(row, flex-start, center, $spacing-3);
+    color: $primary-light;
+    font-size: $text-xl;
+
+    h2 {
+      font-size: $text-xl;
+      font-weight: $font-semibold;
+      color: $text-primary;
+    }
+  }
+
+  &__refresh {
+    @include btn-base;
+    @include glass(0.04);
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-lg;
+    color: $text-secondary;
+    padding: 0;
+    font-size: $text-base;
+
+    &:hover {
+      color: $primary-light;
+      background: rgba($primary, 0.1);
+      svg { animation: spin 0.5s linear; }
+    }
+  }
+
+  &__loading {
+    @include flex-center;
+    flex: 1;
+    min-height: 200px;
+  }
+    @media (max-width: 991px) {
+    padding: 16px;
+  }
+}
+
+.history-empty {
+  @include flex(column, center, center, $spacing-3);
+  flex: 1;
+  min-height: 250px;
+  text-align: center;
+
+  &__icon {
+    font-size: 64px;
+    color: rgba(255, 255, 255, 0.08);
+    margin-bottom: $spacing-2;
+  }
+
+  p {
+    font-size: $text-lg;
+    font-weight: $font-medium;
+    color: $text-secondary;
+  }
+
+  span {
+    font-size: $text-sm;
+    color: $text-muted;
+  }
+}
+
+.history-list {
+  @include flex(column, flex-start, stretch, $spacing-3);
+}
+
+.history-item {
+  @include flex(row, flex-start, center, $spacing-4);
+  padding: $spacing-4;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid $border-color;
+  border-radius: $radius-xl;
+  transition: $transition-all;
+
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      background: rgba($primary, 0.06);
+      border-color: rgba($primary, 0.2);
+      transform: translateX(4px);
+    }
+  }
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+    background: rgba($primary, 0.1);
+    border-radius: $radius-lg;
+    @include flex-center;
+    font-size: $text-xl;
+    color: $primary-light;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    color: $text-primary;
+    @include truncate;
+    margin-bottom: $spacing-1;
+  }
+
+  &__meta {
+    @include flex(row, flex-start, center, $spacing-2);
+    flex-wrap: wrap;
+    gap: $spacing-2;
+
+    span:first-child {
+      font-size: $text-xs;
+      color: $text-muted;
+    }
+  }
+
+  &__processing {
+    @include flex(row, flex-start, center, $spacing-1);
+    font-size: $text-xs;
+    color: $warning;
+  }
+
+  &__failed {
+    font-size: $text-xs;
+    color: $error;
+  }
+
+  &__actions {
+    @include flex(row, flex-end, center, $spacing-2);
+    flex-shrink: 0;
+  }
+
+  &__btn {
+    @include btn-base;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: $radius-lg;
+    font-size: $text-base;
+    background: rgba(255, 255, 255, 0.04);
+
+    &--view {
+      color: $primary-light;
+      &:hover { background: rgba($primary, 0.15); }
+    }
+
+    &--delete {
+      color: $text-muted;
+      &:hover { background: rgba($error, 0.15); color: $error; }
+    }
+  }
+    @media (max-width: 991px) {
+    padding: 8px;
+  }
+}
+
+// Score Badge
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px $spacing-2;
+  background: rgba(var(--color), 0.12);
+  border: 1px solid rgba(var(--color), 0.25);
+  color: var(--color);
+  border-radius: $radius-full;
+  font-size: $text-xs;
+  font-weight: $font-semibold;
+}
+
+// Status Icons
+.status-icon {
+  font-size: $text-xl;
+  &--success { color: $success; }
+  &--error { color: $error; }
+}
+
+.status-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba($primary, 0.2);
+  border-top-color: $primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
